@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <title>weather_homepage</title>
+</head>
+<body>
+<div class="weather-card">
+    <div class="weather-card">
+        <label for="city-select">Select a Canadian city:</label>
+        <select id="city-select">
+            <option value="Vancouver">Vancouver</option>
+            <option value="Burnaby">Burnaby</option>
+            <option value="Victoria">Victoria</option>
+            <option value="Calgary">Calgary</option>
+            <option value="Edmonton">Edmonton</option>
+            <option value="Toronto">Toronto</option>
+            <option value="Ottawa">Ottawa</option>
+            <option value="Montreal">Montreal</option>
+            <option value="Quebec City">Quebec City</option>
+            <option value="Winnipeg">Winnipeg</option>
+            <option value="Halifax">Halifax</option>
+        </select>
+
+        <button id="view-city-btn">View City</button>
+
+        <h2 id="city-name">--</h2>
+
+        <div id="weather-info">
+            <p>Temperature: <span id="temperature">--</span></p>
+            <p>Wind: <span id="wind">--</span></p>
+            <p>Humidity: <span id="humidity">--</span></p>
+        </div>
+    </div>
+</div>
+
+<script src="app.js"></script>
+
+</body>
+</html>
