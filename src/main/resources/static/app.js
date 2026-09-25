@@ -48,7 +48,3 @@ viewCityButton.addEventListener("click", function () {
             console.error(error);
         });
 });
-
-function renderWeather(data) {
-    console.log("Render weather from View City");
-}
