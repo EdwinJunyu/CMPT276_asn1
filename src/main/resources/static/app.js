@@ -1,8 +1,12 @@
 const viewCityButton = document.getElementById("view-city-btn");
 
-viewCityButton.addEventListener("click", function () {
+const loading = document.getElementById("loading");
+const errorMessage = document.getElementById("error-message");
 
+viewCityButton.addEventListener("click", function () {
     const city = document.getElementById("city-select").value;
+    errorMessage.textContent = "";
+    loading.classList.remove("hidden");
 
     const geocodingURL =
         "https://geocoding-api.open-meteo.com/v1/search?name="
@@ -10,17 +14,21 @@ viewCityButton.addEventListener("click", function () {
         + "&count=1&language=en&format=json";
 
     fetch(geocodingURL)
-        .then(response => response.json())
-        .then(locationData => {
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Failed to search for the city.");
+            }
+            return response.json();
+        })
 
-            if (!locationData.results) {
+        .then(locationData => {
+            if (!locationData.results || locationData.results.length === 0) {
                 throw new Error("City not found.");
             }
 
             const latitude = locationData.results[0].latitude;
             const longitude = locationData.results[0].longitude;
             const cityName = locationData.results[0].name;
-
             const weatherURL =
                 "https://api.open-meteo.com/v1/forecast"
                 + "?latitude=" + latitude
@@ -28,11 +36,18 @@ viewCityButton.addEventListener("click", function () {
                 + "&current=temperature_2m,relative_humidity_2m,wind_speed_10m";
 
             return fetch(weatherURL)
-                .then(response => response.json())
-                .then(weatherData => {
 
-                    document.getElementById("city-name").textContent =
-                        cityName;
+                .then(response => {
+
+                    if (!response.ok) {
+                        throw new Error("Failed to load weather data.");
+                    }
+
+                    return response.json();
+                })
+
+                .then(weatherData => {
+                    document.getElementById("city-name").textContent = cityName;
 
                     document.getElementById("temperature").textContent =
                         weatherData.current.temperature_2m + " °C";
@@ -45,10 +60,11 @@ viewCityButton.addEventListener("click", function () {
                 });
         })
         .catch(error => {
-            console.error(error);
+            errorMessage.textContent =
+                "Error: " + error.message;
+        })
+
+        .finally(function () {
+            loading.classList.add("hidden");
         });
 });
-
-function renderWeather(data) {
-    console.log("Render weather from View City");
-}
